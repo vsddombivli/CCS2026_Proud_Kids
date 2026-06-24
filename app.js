@@ -80,6 +80,9 @@
     initPhotoTransform();
   });
 
+  userPhoto.addEventListener('error', () => {
+    placeholderMsg.innerHTML = '<div>Could not load this photo.<br>Try a JPG/PNG (HEIC photos from iPhone are not supported in-browser).</div>';
+  });
   // ---------- Stage sizing helpers ----------
   // We work in "stage px" = the rendered CSS pixel size of stageWrap, which always
   // has the same aspect ratio as the template (941:1672), so a single scale factor
