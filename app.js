@@ -39,8 +39,13 @@
   function showScreen(name){
     Object.values(screens).forEach(s => s.classList.remove('active'));
     screens[name].classList.add('active');
+    history.pushState({screen:name}, '', '#'+name);
   }
-
+  window.addEventListener('popstate', (e) => {
+    const target = (e.state && e.state.screen) || 'landing';
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[target].classList.add('active');
+  });
   // ---------- Step 1: pick photo ----------
   btnAddPhoto.addEventListener('click', () => {
     fileInput.value = '';
