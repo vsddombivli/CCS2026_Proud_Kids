@@ -19,6 +19,7 @@
   *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
   html,body{
     width:100%; height:100%;
+    height: 100dvh;
     overflow:hidden;
     font-family:'Poppins','Segoe UI',Arial,sans-serif;
     background:#1b1230;
@@ -27,6 +28,7 @@
   #app{
     position:relative;
     width:100%; height:100%;
+    height: 100dvh;
     max-width:560px;
     margin:0 auto;
     background:#1b1230;
@@ -40,6 +42,7 @@
     transition:opacity .35s ease;
     overflow-y:auto;
     -webkit-overflow-scrolling:touch;
+    min-height:0;
   }
   .screen.active{ opacity:1; visibility:visible; }
 
@@ -294,10 +297,10 @@
     border-radius:18px;
     overflow:hidden;
     box-shadow:0 14px 34px rgba(0,0,0,0.45);
+    max-height:62vh;
   }
   .result-frame-wrap canvas, .result-frame-wrap img{
-    width:100%;
-    display:block;
+    width:100%; height:100%; object-fit:contain; display:block; 
   }
   .result-actions{
     width:100%;
