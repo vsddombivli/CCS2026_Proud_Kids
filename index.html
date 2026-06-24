@@ -135,10 +135,17 @@
   }
 
   .stage-wrap{
-    width: auto;
-    height: min(56dvh, calc(420px * 1672 / 941)); /* 56dvh ≈ leaves room for everything else below */
-    max-width: 420px;
+    position:relative;
+    width:100%;
+    max-width:420px;
+    max-height:56dvh;
     aspect-ratio: 941/1672;
+    flex-shrink:0;
+    border-radius:16px;
+    overflow:hidden;
+    background:#000;
+    touch-action:none;
+    box-shadow:0 10px 26px rgba(0,0,0,0.5);
   }
   #photoCanvasArea{
     position:absolute; inset:0;
