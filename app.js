@@ -127,7 +127,7 @@
     const boxH = o.ry * 2;
 
     // Minimum scale so that the image covers the oval bounding box (cover-fit).
-    const minScale = Math.max(boxW / iw, boxH / ih);
+    const minScale = Math.max(boxW / iw, boxH / ih) * 1.15; // 15% buffer for panability
     photoState.minScale = minScale;
     photoState.scale = minScale;
 
