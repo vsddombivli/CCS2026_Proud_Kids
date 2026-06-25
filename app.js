@@ -40,6 +40,51 @@
     Object.values(screens).forEach(s => s.classList.remove('active'));
     screens[name].classList.add('active');
     history.pushState({screen:name}, '', '#'+name);
+    if(name === 'editor'){
+      requestAnimationFrame(fitStageToAvailableSpace);
+    }
+  }
+
+  function fitStageToAvailableSpace(){
+    const editorScreen = screens.editor;
+    const header = document.querySelector('.editor-header');
+    const hint = document.querySelector('.editor-hint');
+    const zoomRow = document.querySelector('.zoom-row');
+    const nameWrap = document.querySelector('.name-field-wrap');
+    const actions = document.querySelector('.editor-actions');
+  
+    const screenRect = editorScreen.getBoundingClientRect();
+    const paddingTop = parseFloat(getComputedStyle(editorScreen).paddingTop) || 0;
+    const paddingBottom = parseFloat(getComputedStyle(editorScreen).paddingBottom) || 0;
+    const gap = parseFloat(getComputedStyle(editorScreen).gap) || 0;
+  
+    const otherEls = [header, hint, zoomRow, nameWrap, actions].filter(Boolean);
+    let otherHeight = 0;
+    otherEls.forEach(el => { otherHeight += el.getBoundingClientRect().height; });
+    otherHeight += gap * otherEls.length;
+  
+    const availableHeight = Math.max(140, screenRect.height - paddingTop - paddingBottom - otherHeight);
+    const availableWidth = screenRect.width
+      - (parseFloat(getComputedStyle(editorScreen).paddingLeft)||0)
+      - (parseFloat(getComputedStyle(editorScreen).paddingRight)||0);
+  
+    const ratio = TEMPLATE_W / TEMPLATE_H; // 941/1672
+    let targetH = availableHeight;
+    let targetW = targetH * ratio;
+    const maxW = Math.min(availableWidth, 420);
+    if(targetW > maxW){
+      targetW = maxW;
+      targetH = targetW / ratio;
+    }
+  
+    stageWrap.style.width = targetW + 'px';
+    stageWrap.style.height = targetH + 'px';
+  
+    layoutOvalGuide();
+    if(userPhoto.naturalWidth){
+      clampPhotoPosition();
+      applyPhotoTransform();
+    }
   }
   window.addEventListener('popstate', (e) => {
     const target = (e.state && e.state.screen) || 'landing';
@@ -82,6 +127,7 @@
     if(!userPhoto.naturalWidth) return;
     placeholderMsg.style.display = 'none';
     userPhoto.style.opacity = '1';
+    fitStageToAvailableSpace(); 
     initPhotoTransform();
   });
 
@@ -283,6 +329,7 @@
   // Re-layout on resize/orientation change
   window.addEventListener('resize', () => {
     layoutOvalGuide();
+    fitStageToAvailableSpace();
     if(userPhoto.naturalWidth){
       clampPhotoPosition();
       applyPhotoTransform();
